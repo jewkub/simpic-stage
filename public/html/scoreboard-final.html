@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="./bootstrap.min.css">
+	<script src="./bootstrap.min.js"></script>
+	<script src="./js/countUp.js"></script>
+
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+	<style>
+		.container1 {
+			margin: 0;
+			/*padding-left: 27px;*/
+			/*padding-right: 18px;*/
+		}
+		.teamName{
+			font-size: 66px;
+		}
+		.scoreNum{
+			font-size: 80px;
+			margin-top: 5px;
+		}
+		.scoreInc{
+			font-size: 48px;
+			color: green;
+		}
+		.scoreDec{
+			font-size: 48px;
+			color: rgb(209, 25, 25);
+		}
+		.thirdRow{
+			padding-left: 25px;
+			padding-right: 25px;
+			margin-top: 10px;
+		}
+		.teamLogo{
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			width: 100%; 
+		}
+		.gradient:after{
+			position: absolute;
+			bottom: 0;  
+			left: 0;
+			height: 100%;
+			width: 100%;
+			content: "";
+			background: linear-gradient(to right,
+				rgba(0,0,0,0.5) 0%, 
+				rgba(255,255,255,30%),30%,
+				rgba(255,255,255,0) 45%
+				/* /* rgba(255,255,255,0) 90%,
+				rgba(255,255,255,0.5) 100%  */
+			);
+			pointer-events: none;
+		}
+		.gradientFail:after{
+			position: absolute;
+			bottom: 0;  
+			left: 0;
+			height: 100%;
+			width: 100%;
+			content: "";
+			background: linear-gradient(to right,
+				rgba(96,96,96,1) 0%, 
+				rgba(192,192,192,1) 10%, 
+				rgba(192,192,192,1) 100%
+			);
+			pointer-events: none;
+		}
+</style>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row" style="height: 100vh;">
+			<div class="col-md-4 gradient" id="back1">
+				<div class="container-fluid text-center teamName" id="team1"></div>
+				<div class="container-fluid text-center scoreNum" id="scoreNum1">0.00</div>
+				<div class="row thirdRow">
+					<div class="col-md-6 scoreInc" id="scoreInc1">10.00</div>
+					<div class="col-md-6 text-right scoreDec" id="scoreDec1">0.00</div>
+				</div>
+				<div class="container-fluid">
+					<img class="teamLogo" id="emb1">
+				</div>
+			</div>
+
+			<div class="col-md-4 gradient" id="back2">
+				<div class="container-fluid text-center teamName" id="team2"></div>
+				<div class="container-fluid text-center scoreNum" id="scoreNum2">0.00</div>
+				<div class="row thirdRow">
+					<div class="col-md-6 scoreInc" id="scoreInc2">10.00</div>
+					<div class="col-md-6 text-right scoreDec" id="scoreDec2">0.00</div>
+				</div>
+				<div class="container-fluid">
+					<img class="teamLogo" id="emb2">
+				</div>
+			</div>
+
+			<div class="col-md-4 gradient" id="back3">
+				<div class="container-fluid text-center teamName" id="team3"></div>
+				<div class="container-fluid text-center scoreNum" id="scoreNum3">0.00</div>
+				<div class="row thirdRow">
+					<div class="col-md-6 scoreInc" id="scoreInc3">10.00</div>
+					<div class="col-md-6 text-right scoreDec" id="scoreDec3">0.00</div>
+				</div>
+				<div class="container-fluid">
+					<img class="teamLogo" id="emb3">
+				</div>
+			</div>
+
+			<div class="col-md-4 gradient" id="back4">
+				<div class="container-fluid text-center teamName" id="team4"></div>
+				<div class="container-fluid text-center scoreNum" id="scoreNum4">0.00</div>
+				<div class="row thirdRow">
+					<div class="col-md-6 scoreInc" id="scoreInc4">10.00</div>
+					<div class="col-md-6 text-right scoreDec" id="scoreDec4">0.00</div>
+				</div>
+				<div class="container-fluid">
+					<img class="teamLogo" id="emb4">
+				</div>
+			</div>
+
+			<div class="col-md-4 gradient" id="back5">
+				<div class="container-fluid text-center teamName" id="team5"></div>
+				<div class="container-fluid text-center scoreNum" id="scoreNum5">0.00</div>
+				<div class="row thirdRow">
+					<div class="col-md-6 scoreInc" id="scoreInc5">10.00</div>
+					<div class="col-md-6 text-right scoreDec" id="scoreDec5">0.00</div>
+				</div>
+				<div class="container-fluid">
+					<img class="teamLogo" id="emb5">
+				</div>
+			</div>
+
+			<div class="col-md-4 gradient" id="back6">
+				<div class="container-fluid text-center teamName" id="team6"></div>
+				<div class="container-fluid text-center scoreNum" id="scoreNum6">0.00</div>
+				<div class="row thirdRow">
+					<div class="col-md-6 scoreInc" id="scoreInc6">10.00</div>
+					<div class="col-md-6 text-right scoreDec" id="scoreDec6">0.00</div>
+				</div>
+				<div class="container-fluid">
+					<img class="teamLogo" id="emb6">
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<script src="./socket.io.js"></script>
+	<script src="./jquery-3.2.1.min.js"></script>
+	<script >
+		var options = {
+  useEasing: true, 
+  useGrouping: true, 
+  separator: ',', 
+  decimal: '.', 
+};
+		(function(){
+			var scoreNum=[0],scoreInc=[0],scoreDec=[0];
+			for(var i=1;i <= 6;i++){
+				scoreNum.push(new CountUp('scoreNum'+i,0,0,2,2.5, options));
+				//if(!scoreNum[i].error) scoreNum[i].start();
+				scoreInc.push(new CountUp('scoreInc'+i,0,0,2,2.5, options));
+				scoreDec.push(new CountUp('scoreDec'+i,0,0,2,2.5, options));
+			}
+			for (var i=1;i <= 6;i++) {
+				scoreNum[i].update(0.00);
+				scoreInc[i].update(10.00);
+				scoreDec[i].update(0.00);
+			}
+
+			// var myColor = [0,"rgb(230, 255, 196)",
+			// 				"rgb(170, 239, 233)",
+			// 				"rgba(216, 170, 239, 0.6)",
+			// 				"rgb(255, 237, 196)"];
+			// var myColor = [0,"#C0AAA5","#FFE565","#FFE565","#C0AAA5"];
+			// var myColor = [0,"#C0AAA5","#F8D682","#F8D682","#C0AAA5"];
+			var myColor = [0,"#C0AAA5","#F9DE9A","#F9DE9A","#C0AAA5"];
+			// FCC337
+			var socket = io();		
+
+			socket.emit('reqNames');
+
+			if(socket !== undefined){
+				console.log('Connected');
+			};
+
+			var doEliminate = function(i){
+				console.log("eliminate team" + i);
+				$("#back"+i).addClass("gradientFail");
+			}
+			var doUneliminate = function(i){
+				console.log("uneliminate team" + i);
+				$("#back"+i).removeClass("gradientFail");
+			}
+
+			socket.on('scorefin',function(data){
+				console.log(data);
+				for (var i=1;i <= 6;i++) {
+					scoreNum[i].update(data[i]);
+					scoreInc[i].update(data[i]+10);
+					scoreDec[i].update(data[i]*4/5);
+				}
+			});
+
+			socket.on('clearedfin',function(data){
+				for(var i=1;i <= 6;i++){
+					scoreNum[i].update(data[i]);
+					scoreInc[i].update(data[i]+10);
+					scoreDec[i].update(data[i]*4/5);
+				}
+			})
+			
+			socket.on('changeTeams',function(data){
+				// console.log("---> " + data);
+				for(var i=1; i<=6; i++){
+					$('#back'+i).css("background-color",myColor[i]);
+					$('#team'+i).text(data['t'+i]);
+					$('#emb'+i).attr("src",data['ifin'+i]);
+				}
+			});
+			socket.on('eliminated',function(i){
+				doEliminate(i);
+			});
+			socket.on('uneliminated',function(i){
+				doUneliminate(i);
+			});
+
+		})();
+
+		
+	</script>
+</body>

@@ -1,0 +1,24 @@
+.container {
+    display: grid;
+    grid-template-columns: auto 38%;
+    grid-template-areas:
+    ".console"
+    ".score";
+}
+
+#clock {
+    margin-left: 40px;
+    color: darkred;
+    font-weight: bold;
+}
+
+#rf-button {
+   position: absolute;
+   left: 0;
+   bottom: 0;
+}
+
+.text-score {
+  margin-left: 20px;
+  width: 60px;
+}

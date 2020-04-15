@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="./bootstrap.min.css">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<script src="./bootstrap.min.js""></script>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style type="text/css">
+    	.row {
+    		height : 200px;
+    	}
+    	.col-md-6{
+    		border-style: solid;
+    		font-size: 40px;
+    	}
+    	.col-md-4{
+    		border-style: solid;
+    		font-size: 40px;
+    	}
+		.col-md-4 > img{
+			visibility: hidden;
+			margin: 5px;
+			width: 240px;
+			height: 180px;
+		}
+    	.col-md-9{
+    		border-style: solid;
+    		font-size: 30px;
+    	}
+    	.row1{
+    		height: 50px;
+    	}
+    </style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4" id="team1">1
+				<img id="img1">
+			</div>
+			<div class="col-md-4" id="team2">2
+				<img id="img2">
+			</div>
+			<div class="col-md-4" id="team3">3
+				<img id="img3">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2"> </div>
+			<div class="col-md-4" id="team4">4
+				<img id="img4">
+			</div>
+			<div class="col-md-4" id="team5">5
+				<img id="img5">
+			</div>
+			<div class="col-md-2"> </div>
+		</div>
+		<div class="row">
+			<div class="col-md-4" id="team6">6
+				<img id="img6">
+			</div>
+			<div class="col-md-4" id="team7">7
+				<img id="img7">
+			</div>
+			<div class="col-md-4" id="team8">8
+				<img id="img8">
+			</div>
+		</div>
+		<div class="row row1">
+			<div class="col-md-3">
+				<button type="button" class="btn btn-primary btn-large" id="button2">Clear judge</button>
+			</div>
+			<div class="col-md-9" id="team9">
+				READY
+			</div>
+		</div>
+	</div>
+ 	<script src="./socket.io.js"></script>
+	<script src="./jquery-3.2.1.min.js"></script>
+	
+	<script >
+		(function(){
+			var socket=io();
+			var send=[];
+			for(var i=0;i<=9;i++) send.push(0);
+//
+			if(socket != undefined){
+				console.log("connected");
+			}
+			$("div[id*='team']").each(function(index){
+				$(this).click(function(){
+					var i = $(this).attr('id').substr(4);
+					socket.emit('judgesec',i);
+					console.log(i);
+					if(i==9){
+						console.log('result has been sent');
+						socket.emit('sendResult',send);
+					}
+				})
+			});
+
+			socket.on('judgesec2',function(i,val){
+				if(i<=8){
+					if(val%3==1){
+						$('#team'+i).css('background','#00ff00');
+						send[i]=1;
+					}
+					if(val%3==2){
+						$('#team'+i).css('background','#ff0000');
+						send[i]=2;
+					}
+					if(val%3==0){
+						$('#team'+i).css('background','#ffffff');
+						send[i]=0;
+					}
+				}
+				else if(i==9){
+					if(val%2==1){
+						$('#team'+i).css('background','#00ff00');
+						send[i]=1;
+					}
+					if(val%2==0){
+						$('#team'+i).css('background','#ffffff');
+						send[i]=0;
+					}	
+				}
+
+			});
+			
+			$('#button2').click(function(){
+				if(window.confirm("Are you sure you want to clear all judge?")){
+					// for(var i=1; i<=8; i++){
+					// 	document.getElementById('img'+i).style.visibility = 'hidden';
+					// }
+					socket.emit('judgesec',0);
+					// socket.emit('judgeMnt', {t1: 0, t2: 0, t3: 0, t4: 0, t5: 0, t6: 0, t7: 0, t8: 0});
+				}
+			});
+
+			socket.on('imageForJudge',function(data){
+				console.log('img sent + ' + data.name);
+				var i = data.teamId;
+				document.getElementById('img'+i).src=data.img;
+				if(data.img == '')
+					document.getElementById('img'+i).style.visibility='hidden';
+				else 
+					document.getElementById('img'+i).style.visibility='visible';
+			});
+		})();
+	</script>
+</body>

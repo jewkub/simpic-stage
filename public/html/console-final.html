@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<p>SIMPIC Second Round console<p>
+	<link rel="stylesheet" href="./bootstrap.min.css">
+	<script src="./bootstrap.min.js"></script>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<style>
+		.prevImg{
+			border-style: solid;
+			border-width: 1px;
+			border-color: #AAAAAA;
+			width: 260px;
+			height: 200px;
+		}
+		.myImg{
+			margin: 5px;
+			width: 240px;
+			height: 180px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		Round counter 
+		<input type="text" id="counterinp"></span>
+		<span id="counter">0</span>  
+		<button type="button" class="btn btn-primary" id="changeCounter">Change</button>
+
+		<br>
+		<span class="form-group">
+		<input type="text" id="team1"></span>
+		<span id="score1">0</span>
+		<button type="button" class="btn btn-secondary" id="elim1">Eliminate</button>
+		<br>
+		<span class="form-group">
+		<input type="text" id="team2"></span>
+		<span id="score2">0</span>
+		<button type="button" class="btn btn-secondary" id="elim2">Eliminate</button>
+		<br>
+		<span class="form-group">
+		<input type="text" id="team3"></span>
+		<span id="score3">0</span>  
+		<button type="button" class="btn btn-secondary" id="elim3">Eliminate</button>
+		<br>
+		<span class="form-group">
+		<input type="text" id="team4"></span>
+		<span id="score4">0</span> 
+		<button type="button" class="btn btn-secondary" id="elim4">Eliminate</button>
+		<br><br>
+		<button type="button" class="btn btn-dark" id="submit">Submit</button>
+		<button type="button" class="btn btn-dark" id="clear">Clear</button>
+		<button type="button" class="btn btn-dark" id="clearJudge">Clear Judge</button>
+		<br>
+		<button type="button" class="btn btn-secondary" id="save">Save Image</button>
+		<br><br>
+		<div class="btn-group" id="buttons">
+		</div>
+		<br>
+		<br>
+		<div class="row">
+			<div class="col prevImg"><img class="myImg" id="img1"></div>
+			<div class="col prevImg"><img class="myImg" id="img2"></div>
+		</div>
+		<div class="row">
+			<div class="col prevImg"><img class="myImg" id="img3"></div>
+			<div class="col prevImg"><img class="myImg" id="img4"></div>
+		</div>
+
+	</div>
+ 	<script src="./socket.io.js"></script>
+	<script src="./jquery-3.2.1.min.js"></script>
+	<script >
+		(function(){
+			var element = function(id){
+				return document.getElementById(id);
+			}
+			var clear = element('clear');
+			var team=[];
+			var score=[];
+			team.push(0);
+			score.push(0);
+			var isElim=[0,0,0,0,0,0];
+			var imgs = [];
+			for (var i = 0; i <= 20; i++) {
+				$('#buttons').append('<button type="button" class="btn btn-outline-secondary disabled" id="button' + i + '">' + i);
+				imgs.push(['','','','']);
+			}
+
+			for(var i=1;i<8;i++){
+				$('#team'+i).val(0);
+				team.push(element('team'+i));
+				score.push(element('score'+i));
+			}
+			
+
+			var socket = io();
+				if(socket !== undefined){
+				console.log('Connected');
+			};
+
+			socket.on('scorefin',function(data){
+				$('#counter').text(data[0]);
+				for(var i=1;i<5;i++){
+					$('#score'+i).text(data[i]);
+				}
+			});
+
+			socket.on('clearedfin',function(data){
+				$('#counter').text(0);
+				for(var i=1;i<5;i++){
+					$('#score'+i).text(data[i]);
+				}
+			});
+
+			socket.on('imageSaved',function(data){
+				var co=parseInt($("#counter").text());
+				for(var i=0; i<4; i++){
+					imgs[co][i]=data[i];
+					// console.log('i-->'+ data[i]);
+				}
+				$('#button'+co).removeClass("disabled");
+				console.log('saved images of round' + co);
+			});
+
+			$("#changeCounter").click(function(){
+				if(window.confirm("Are you sure you want to override 'counter'?")){
+					$('#counter').text($('#counterinp').val());
+				}
+			});
+
+			$("#clear").click(function(){
+				if(window.confirm("Are you sure you want to clear all score?")){
+					socket.emit('clearfin');
+				}
+			});
+				 
+			$("#submit").click(function(){
+				if(window.confirm("Are you sure you want to override all score?")){
+					var sendScore=[];
+					sendScore.push(0);
+					for(var i=1;i<5;i++){
+						sendScore.push(parseFloat($('#team'+i).val()));
+					}
+					socket.emit('scorefinOverride',sendScore);
+				}
+			});
+			
+			$("#clearJudge").click(function(){
+				if(window.confirm("Are you sure you want to clear judge?")){
+					socket.emit('judgefin',0);
+				}
+			});
+
+			$("#save").click(function(){
+				if(window.confirm("Are you sure you want to save image for round " + $('#counter').text() + " ?")){
+					socket.emit('reqImage');	
+				}
+			});
+
+			$("button[id*='button']").each(function(index){
+				$(this).click(function(){
+					var round=this.id.substr(6);
+					if(window.confirm("Are you sure you want to send images from round " + round)){
+						socket.emit("sendSaved",imgs[round]);
+						console.log("Saved images have been sent.");
+					}
+					for(var i=1; i<=4; i++){
+						$('#img'+i).attr("src",imgs[round][i-1]);
+					}
+				});
+			});
+			$("button[id*='elim']").each(function(index){ //eliminate
+					$(this).click(function(){
+						var teamNum = index+1;
+						if(isElim[teamNum]==0){
+							if(window.confirm("Are you sure you want to eliminate team" + (teamNum) + "?")){
+								console.log("Eliminate --> " + (teamNum));
+								$(this).removeClass("btn-secondary");
+								isElim[index+1]=1;
+								socket.emit('elim',teamNum);
+							}
+						}
+						else{
+							if(window.confirm("Are you sure you want to uneliminate team" + (teamNum) + "?")){
+								console.log("Uneliminate --> " + (teamNum));
+								$(this).addClass("btn-secondary");
+								isElim[teamNum]=0;
+								socket.emit('unelim',teamNum);
+							}
+						}
+					});
+				});
+
+		})();
+	</script>
+</body>

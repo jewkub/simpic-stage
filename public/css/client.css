@@ -1,0 +1,25 @@
+body {
+  /* padding-left: 30px; */
+}
+
+h3 {
+  padding-left: 30px;
+}
+
+#clock {
+  margin-left: 100px;
+  color: crimson;
+}
+
+#confirmModal {
+  top: 25%;
+}
+
+#font-example {
+  position: fixed;
+  height: 100px;
+  width: 10px;
+  top: 38%;
+  left: 25px;
+  background-color: #222222;
+}

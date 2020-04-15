@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="./bootstrap.min.css">
+	<script src="./bootstrap.min.js"></script>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+		body{
+			background-color: #222222;
+			color: white;
+			font-size: 36px;
+		}
+		.row{
+			height: 64px;
+			padding: 0px 0px 0px 10px;
+			margin: 36px 0px 36px 0px;
+		}
+		.name-box{
+			width: 160px;
+			font-size: 32px;
+			border-style: solid;
+			border-width: 5px;
+			border-radius: 20px 0px 0px 20px;
+			padding-left: 5px;
+			color: #222222;
+			font-weight: bold;
+		}
+		.black-line{
+			width: 5px;
+			background-color: #222222;
+		}
+		.score-box{
+			width: 130px;
+			border-radius: 0px 20px 20px 0px;
+			font-weight: normal;
+			margin-left: 0px;
+			color: #222222;
+		}
+		.col{
+			padding: 0px; 
+			margin: 0px;
+			position: relative;
+		}
+		.progress-bar {
+			position: relative;
+			top: 27px;
+			height: 10px;
+		}
+		.myShape{
+			height: 42px;
+			width: 42px;
+			top: 11px;
+			left: -10px;
+			right: 0px;
+			border-radius: 50%;
+			position: relative;
+		}
+		.myShape2{
+			height: 22px;
+			width: 22px;
+			top: 21px;
+			left: -42px;
+			right: 0px;
+			border-radius: 50%;
+			position: relative;
+			z-index: 1000;
+			background-color: #222222;
+		}
+		.eliminated{
+			background-color: #666666;
+			border-color: #666666;
+			color: #222222;
+		}
+		.pass{
+			background-color: #B5E045;
+			border-color: #B5E045;
+			color: #222222;
+		}
+		.extra{
+			background-color: #F2F3F4;
+			border-color: #F2F3F4;
+			color: #222222;
+		}
+		.fail{
+			background-color: #666666;
+			border-color: #666666;
+			color: #222222;
+		}
+	</style>
+	<!--<p>SIMPIC Second Round Scoreboard<p>-->
+</head>
+<body>
+	<div class="container-fluid text-center" style="margin: 32px 0px 64px 0px">
+		<h1>Second round : Question <span id="counter">0</span> </h3>  
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="text-center name-box" id="box1">t1</div>
+			<div class="black-line"></div>
+			<div class="text-center name-box score-box" id="score1">0.00</div>
+			<div class="col row" id="mydiv">
+				<div class="progress-bar" id="prog1"></div>
+				<div class="myShape" id="shape1"></div>
+				<div class="myShape2"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<div class="row">
+			<div class="text-center name-box" id="box2">t2</div>
+			<div class="black-line"></div>
+			<div class="text-center name-box score-box" id="score2">0.00</div>
+			<div class="col row">
+				<div class="progress-bar" id="prog2"></div>
+				<div class="myShape" id="shape2"></div>
+				<div class="myShape2"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="text-center name-box" id="box3">t3</div>
+			<div class="black-line"></div>
+			<div class="text-center name-box score-box" id="score3">0.00</div>
+			<div class="col row">
+				<div class="progress-bar" id="prog3"></div>
+				<div class="myShape" id="shape3"></div>
+				<div class="myShape2"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="text-center name-box" id="box4">t4</div>
+			<div class="black-line"></div>
+			<div class="text-center name-box score-box" id="score4">0.00</div>
+			<div class="col row">
+				<div class="progress-bar" id="prog4"></div>
+				<div class="myShape" id="shape4"></div>
+				<div class="myShape2"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="text-center name-box" id="box5">t5</div>
+			<div class="black-line"></div>
+			<div class="text-center name-box score-box" id="score5">0.00</div>
+			<div class="col row">
+				<div class="progress-bar" id="prog5"></div>
+				<div class="myShape" id="shape5"></div>
+				<div class="myShape2"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<div class="row">
+			<div class="text-center name-box" id="box6">t6</div>
+			<div class="black-line"></div>
+			<div class="text-center name-box score-box" id="score6">0.00</div>
+			<div class="col row">
+				<div class="progress-bar" id="prog6"></div>
+				<div class="myShape" id="shape6"></div>
+				<div class="myShape2"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="text-center name-box" id="box7">t7</div>
+			<div class="black-line"></div>
+			<div class="text-center name-box score-box" id="score7">0.00</div>
+			<div class="col row">
+				<div class="progress-bar" id="prog7"></div>
+				<div class="myShape" id="shape7"></div>
+				<div class="myShape2"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="text-center name-box" id="box8">t8</div>
+			<div class="black-line"></div>
+			<div class="text-center name-box score-box" id="score8">0.00</div>
+			<div class="col row">
+				<div class="progress-bar" id="prog8"></div>
+				<div class="myShape" id="shape8"></div>
+				<div class="myShape2"></div>
+			</div>
+		</div>
+	</div>
+
+<script src="./socket.io.js"></script>
+	<script src="./jquery-3.2.1.min.js"></script>
+	<!--<script src="./scoreboard.js"></script>-->
+	<script >
+
+	/*	$(document).on('ready',function(){
+			$('.progress .progress-bar').css("width",function(){
+				return $(this).attr("aria-valuenow") + "%";
+			})
+		}) */
+	(function(){
+		
+		// var myColor = ['','#CDAF95','#FFDA76','#FFFF89','#B2F3B2','#A8F4F4','#F2F3F4','#FFE4E1','#E2C4FF'];
+		var myColor = ['','#CDAF95','#FFB77F','#FFFF89','#B1F589','#A8F4F4','#F2F3F4','#FFB7BA','#CA99E3'];
+
+		var changeColor = function(i,data){
+			//info box
+			$('#box'+i).css("border-color",data);
+			$('#box'+i).css("background-color",data);
+			$('#score'+i).css("border-color",data);
+			$('#score'+i).css("background-color",data);
+			//progress_bar
+			$('#prog'+i).css("background-color",data);
+			$('#shape'+i).css("background-color",data);
+		}
+		var updateProg = function(name, val){
+			var mxWidth = $("#mydiv").width();
+			console.log(mxWidth);
+			var progWidth = ((val*(mxWidth-20-64)/100)+20)/mxWidth*100;
+			console.log(name + ' >> ' + progWidth)
+			$('#'+name).css("width",progWidth+'%');
+		}
+		for(var i=1; i<=8;i++){
+			changeColor(i,myColor[i]);
+			updateProg('prog'+i,0);
+		}
+		var doEliminate = function(i){
+			console.log("eliminate team" + i);
+			$("#box"+i).addClass("eliminated");
+			$("#score"+i).addClass("eliminated");
+			$("#prog"+i).addClass("eliminated");
+			$("#shape"+i).addClass("eliminated");
+			changeColor(i,"");
+		}
+		var doUneliminate = function(i){
+			console.log("uneliminate team" + i);
+			$("#box"+i).removeClass("eliminated");
+			$("#score"+i).removeClass("eliminated");
+			$("#prog"+i).removeClass("eliminated");
+			$("#shape"+i).removeClass("eliminated");
+			changeColor(i,myColor[i]);
+		}
+
+		var socket = io();
+
+		if(socket !== undefined){
+			console.log('Connected');
+		};
+
+		socket.emit('reqNames');
+
+		socket.on('score',function(data){
+			// console.log('working on scoreboard');
+			for(var i=1;i<=8;i++){
+				if($('#score'+i).hasClass("eliminated") == false)
+					$('#score'+i).text(data[i].toFixed(2));
+			}
+			$('#counter').text(Math.round(data[0]));
+			for(var i=1;i<=8;i++) {
+				if($('#prog'+i).hasClass("eliminated") == false)
+					updateProg('prog'+i,data[i]/200*100);
+			}
+			// for(var i=1;i<6;i++) $('#scoresec'+i).text(data[i]);
+		});
+		socket.on('cleared',function(data){
+			$('#counter').text(0);
+			for(var i=1;i<=8;i++){
+				$('#score'+i).text(data[i].toFixed(2));
+				updateProg('prog'+i,0);
+				if($('#score'+i).hasClass("eliminated") == true)
+					doUneliminate(i);
+			}
+		});
+		socket.on('updRanked',function(data){
+			for(var i=1; i<=8; i++){
+				if(data[i]==0){
+					continue;
+				}
+				var text;
+				if(data[i]<=3)text = "pass";
+				else if(data[i]==4)text = "extra";
+				else text = "fail";
+				$("#box"+i).addClass(text);
+				$("#score"+i).addClass(text);
+				$("#prog"+i).addClass(text);
+				$("#shape"+i).addClass(text);
+				changeColor(i,"");
+			}
+			console.log('update ranked');
+		});
+
+		socket.on('eliminated',function(i){
+			doEliminate(i);
+		});
+		socket.on('uneliminated',function(i){
+			doUneliminate(i);
+		});
+		
+		socket.on('changeTeams',function(data){
+			// console.log("---> " + data);
+			for(var i=1; i<=8; i++){
+				$('#box'+i).text(data['t'+i]);
+			}
+		});
+		
+	})();
+
+		
+	</script>
+</body>

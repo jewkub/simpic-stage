@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<p>SIMPIC Team Name Center<p>
+	<!-- <link rel="stylesheet" href="./bootstrap.min.css"> -->
+	<!-- <script src="./bootstrap.min.js""></script> -->
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+</head>
+<body>
+	<div class="container">
+		<span class="form-group">1
+		<input type="text" id="team1">2</span>
+		<br>
+		<span class="form-group">2
+		<input type="text" id="team2">3</span>
+		<br>
+		<span class="form-group">3
+		<input type="text" id="team3">1</span>
+		<br>
+		<span class="form-group">4
+		<input type="text" id="team4">4</span>
+		<br>
+		<span class="form-group">5
+		<input type="text" id="team5"></span>
+					
+		<br>
+		<span class="form-group">6
+		<input type="text" id="team6"></span>
+		<br>
+		<span class="form-group">7
+		<input type="text" id="team7"></span>
+		<br>
+		<span class="form-group">8
+		<input type="text" id="team8"></span>
+		<br>
+		<p>semi-final image</p>
+		<span class="form-group">img1
+		<input type="text" id="isemi1"></span>
+		<br>
+		<span class="form-group">img2
+		<input type="text" id="isemi2"></span>
+		<br>
+		<span class="form-group">img3
+		<input type="text" id="isemi3"></span>
+		<br>
+		<span class="form-group">img4
+		<input type="text" id="isemi4"></span>
+		<br>
+		<span class="form-group">img5
+		<input type="text" id="isemi5"></span>
+		<br>
+		<p>final image</p>
+		<span class="form-group">img1
+		<input type="text" id="ifin1"></span>
+		<br>
+		<span class="form-group">img2
+		<input type="text" id="ifin2"></span>
+		<br>
+		<span class="form-group">img3
+		<input type="text" id="ifin3"></span>
+		<br>
+		<span class="form-group">img4
+		<input type="text" id="ifin4"></span>
+		<br>
+		
+		<br>
+		<button type="button" class="btn" id="submit">Submit</button>
+		<br>
+		<h6>semi:25 /// final: 12</h6>
+
+	</div>
+	<script src="./vendor/js/socket.io.js"></script>
+	 <script src="./vendor/js/jquery-3.2.1.min.js"></script>
+	 <script>window.jQuery || document.write('<script src="./jquery-3.2.1.min.js"><\/script>')</script>
+	<script >
+		(function(){
+            var team = {
+                't1': "Team1",   
+                't2': "Team2",  
+                't3': "Team3",   
+                't4': "Team4", 
+                't5': "Team5",    
+                't6': "Team6",    
+                't7': "Team7",    
+                't8': "Team8",
+                'isemi1': "logo2019-25/00.png",
+                'isemi2': "logo2019-25/00.png",
+                'isemi3': "logo2019-25/00.png",
+                'isemi4': "logo2019-25/00.png",
+                'isemi5': "logo2019-25/00.png",
+                'ifin1': "logo2019-12/00.png",
+                'ifin2': "logo2019-12/00.png",
+                'ifin3': "logo2019-12/00.png",
+                'ifin4': "logo2019-12/00.png" 
+            };
+			for(var i=1;i<=8;i++){
+				$('#team'+i).val(team['t'+i]);
+			}
+			for(var i=1;i<=5;i++){
+				$('#isemi'+i).val(team['isemi'+i]);
+			}
+			for(var i=1;i<=4;i++){
+				$('#ifin'+i).val(team['ifin'+i]);
+			}
+			
+			var socket = io('/team');
+			if(socket !== undefined){
+				console.log('Connected');
+			};
+			
+			socket.on('reqNames',function(){
+				team['sub']=0;
+				socket.emit('names',team);
+			});
+
+			$(document).ready(function(){
+				$("#submit").click(function(){
+					if(confirm("Do you want to change team name?")){
+                        for(i=1; i<=8; i++){
+                            team['t'+i]=$('#team'+i).val();
+                        }
+                        for(i=1; i<=5; i++){
+                            team['isemi'+i]=$('#isemi'+i).val();
+						}
+						for(i=1; i<=4; i++){
+							team['ifin'+i]=$('#ifin'+i).val();
+						}
+						team['sub']=1;
+						console.log('Sent.');
+						socket.emit('names',team);
+					}
+				});
+			});
+		})();
+	</script>
+</body>

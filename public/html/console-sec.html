@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<p>SIMPIC Second Round console<p>
+	<link rel="stylesheet" href="./bootstrap.min.css">
+	<script src="./bootstrap.min.js""></script>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+</head>
+<body>
+	<div class="container">
+			Round counter 
+			<input type="text" id="counterinp"></span>
+			<span id="counter">0</span>  
+			<button type="button" class="btn btn-success" id="changeCounter">Change</button>
+			<br>
+			<span class="form-group">1
+			<input type="text" id="team1"></span>
+			<span id="score1">0</span>
+			<button type="button" class="btn btn-info" id="change01">0</button>
+			<button type="button" class="btn btn-secondary" id="change21">Eliminate</button>
+			<br>
+			<span class="form-group">2
+			<input type="text" id="team2"></span>
+			<span id="score2">0</span>
+			<button type="button" class="btn btn-info" id="change02">0</button>
+			<button type="button" class="btn btn-secondary" id="change22">Eliminate</button>
+			
+			<br>
+			<span class="form-group">3
+			<input type="text" id="team3"></span>
+			<span id="score3">0</span>  
+			<button type="button" class="btn btn-info" id="change03">0</button>
+			<button type="button" class="btn btn-secondary" id="change23">Eliminate</button>
+			<br>
+			<span class="form-group">4
+			<input type="text" id="team4"></span>
+			<span id="score4">0</span> 
+			<button type="button" class="btn btn-info" id="change04">0</button>
+			<button type="button" class="btn btn-secondary" id="change24">Eliminate</button>
+			<br>
+			<span class="form-group">5
+			<input type="text" id="team5"></span>
+			<span id="score5">0</span>  
+			<button type="button" class="btn btn-info" id="change05">0</button>
+			<button type="button" class="btn btn-secondary" id="change25">Eliminate</button>
+			
+			<br>
+			<span class="form-group">6
+			<input type="text" id="team6"></span>
+			<span id="score6">0</span>  
+			<button type="button" class="btn btn-info" id="change06">0</button>
+			<button type="button" class="btn btn-secondary" id="change26">Eliminate</button>
+			<br>
+			<span class="form-group">7
+			<input type="text" id="team7"></span>
+			<span id="score7">0</span>  
+			<button type="button" class="btn btn-info" id="change07">0</button>
+			<button type="button" class="btn btn-secondary" id="change27">Eliminate</button>
+			<br>
+			<span class="form-group">8
+			<input type="text" id="team8"></span>
+			<span id="score8">0</span>  
+			<button type="button" class="btn btn-info" id="change08">0</button>
+			<button type="button" class="btn btn-secondary" id="change28">Eliminate</button>
+			<br>
+			<button type="button" class="btn btn-dark" id="submit">Submit</button>
+			<button type="button" class="btn btn-dark" id="clear">Clear</button>
+			<button type="button" class="btn btn-dark" id="clearJudge">Clear Judge</button>
+			<br>
+			<br>
+			<button type="button" class="btn btn-secondary" id="ranked">Ranked</button>
+			<button type="button" class="btn btn-secondary" id="submitRanked">SubmitR</button>
+
+
+	</div>
+ 	<script src="./socket.io.js"></script>
+	<script src="./jquery-3.2.1.min.js"></script>
+	<script >
+		(function(){
+			// var element = function(id){
+			// 	return document.getElementById(id);
+			// }
+			// var clear = element('clear');
+			// var team=[];
+			// var score=[];
+			// team.push(0);
+			// score.push(0);
+			for(var i=1;i<=8;i++){
+				$('#team'+i).val(0);
+				// team.push(element('team'+i));
+				// score.push(element('score'+i));
+			}
+			
+			var socket = io();
+			// var socket2 = io('127.0.0.1:8080/score');
+
+			if(socket !== undefined){
+				console.log('Connected');
+			};
+			// if(socket2 !== undefined){
+			// 	console.log('Connected to socket2');
+			// }
+			// else console.log ('fail');
+			socket.on('score',function(data){
+				for(var i=1;i<=8;i++){
+					$('#score'+i).text(data[i].toFixed(2));
+				}
+				$('#counter').text(data[0]);
+			});
+			socket.on('cleared',function(){
+				for(var i=0;i<=8;i++){
+					$('#team'+i).val(0);
+					$('#score'+i).text(0);
+					$('#counter').text(0);
+				}
+			});
+			// var time=[];
+			// socket2.on('submit',function(data){ //look like no one gonna send this
+			// 	console.log(data);
+			// 	var i = parseInt(data.name.substr(1));
+			// 	time[i]=data.time;
+			// 	var tmp=time[i];
+			// 	var gain=8;
+			// 	for(var j=0;tmp>=0;j++){
+			// 		gain+=2;
+			// 		tmp-=10;
+			// 	}
+			// 	$('#team'+i).val(gain);
+			// })
+
+			var isElim=[0,0,0,0,0,0,0,0,0];
+			$(document).ready(function(){
+				$("#changeCounter").click(function(){
+					if(window.confirm("Are you sure you want to override 'Round number'?")){
+						var sendScore=[];
+						sendScore.push(parseInt($('#counterinp').val()));
+						for(i=1;i<=8;i++)
+							sendScore.push(0);
+						socket.emit('update',sendScore);
+					}
+				});
+				$("#submit").click(function(){
+					if(window.confirm("Do you want to change all score?")){
+						var sendScore=[];
+						sendScore.push(parseInt($('#counter').text()));
+						for(var i=1;i<=8;i++){
+							sendScore.push(parseFloat($('#team'+i).val()));
+						}
+						socket.emit('update',sendScore);
+					}
+				});
+				$("#clear").click(function(){
+					if(window.confirm("Do you want to clear all score?")){
+						for(var i=1; i<=8; i++){
+							isElim[i]=0;
+							$('#change2'+i).addClass("btn-secondary");
+						}
+						socket.emit('clear');
+					}
+				});
+				$("#clearJudge").click(function(){
+					if(window.confirm("Are you sure you want to clear judge?")){
+						socket.emit('judgesec',0);
+					}
+				});
+
+				$("#ranked").click(function(){
+					if(window.confirm("Do you want to ranked?")){
+						var arr = [];
+                        var sc = [0];
+						for(var i=1; i<=8; i++){
+							sc.push(parseFloat($('#score'+i).text()));
+							arr.push(i);
+						}
+						arr.sort(function(a,b){return sc[b]-sc[a]});
+						for(var i=0; i<8; i++){
+							$('#team'+arr[i]).val(i+1);
+						}
+					}
+				});
+				$("#submitRanked").click(function(){
+					if(window.confirm("Do you want to send ranked?")){
+						var rank=[0];
+						for(var i=1;i<=8;i++){
+							rank.push(parseInt($('#team'+i).val()));
+						}
+						socket.emit('ranked',rank);
+					}
+				});
+				$("button[id*='change0']").each(function(index){
+					$(this).click(function(){
+						var str = $(this).attr("id");
+						var i = str.substr(7);
+						//console.log(i);
+						$('#team'+i).val(0);	
+					});
+				});
+				$("button[id*='change2']").each(function(index){ //eliminate
+					$(this).click(function(){
+						var teamNum = index+1;
+						if(isElim[teamNum]==0){
+							if(window.confirm("Are you sure you want to eliminate team" + (teamNum) + "?")){
+								console.log("Eliminate --> " + (teamNum));
+								$(this).removeClass("btn-secondary");
+								isElim[index+1]=1;
+								socket.emit('elim',teamNum);
+							}
+						}
+						else{
+							if(window.confirm("Are you sure you want to uneliminate team" + (teamNum) + "?")){
+								console.log("Uneliminate --> " + (teamNum));
+								$(this).addClass("btn-secondary");
+								isElim[teamNum]=0;
+								socket.emit('unelim',teamNum);
+							}
+						}
+					});
+				});
+			});
+		})();
+	</script>
+</body>

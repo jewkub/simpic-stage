@@ -1,0 +1,102 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="icon.png"> -->
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="./vendor/css/bulma.css">
+    <link rel="stylesheet" href="./css/cp.css">
+    <script src="./vendor/js/moment.js"></script>
+    <script src="./vendor/js/socket.io.js"></script>
+    <script src="./vendor/js/jquery-3.2.1.min.js"></script>
+</head>
+
+<body>
+    <br>
+    <div class="container">
+        <div class="console">
+            <div class="columns">
+                <div class="box column is-offset-0 is-11 has-text-centered">
+                    <div class="field has-addons">
+                        <div class="control">
+                            <input class="input" type="number" placeholder="Seconds" id="second">
+                        </div>
+                        <div class="control">
+                            <a class="button is-primary" id="activateDraw">
+                                activate
+                            </a>
+                        </div>
+                        <a class="button is-success" id="clear-log" style="margin-left:30px;">
+                            Clear
+                        </a>
+                        <a class="button is-success" id="force-finish" style="margin-left:20px;">
+                            Force Finish
+                        </a>
+                    </div>
+                        <h3 id="clock" class="is-size-5">Time left: <span id='time-left'>--.--</span> second(s)</h3>
+                </div>
+            </div>
+            <br/>
+
+            <div class="columns">
+                <div class="column is-offset-0 is-11">
+                    <div class="box">
+                        <div class="field is-grouped" id="filter-button">
+                            <p class="control">
+                                <a class="button is-link" id="filter-button-all">
+                                    ALL
+                                </a>
+                            </p>
+                            <p class="control">
+                                <a class="button">
+                                    ACTIVATE
+                                </a>
+                            </p>
+                            <p class="control">
+                                <a class="button">
+                                    SUBMIT
+                                </a>
+                            </p>
+                            <p class="control">
+                                <a class="button">
+                                    CONNECT
+                                </a>
+                            </p>
+                            <p class="control">
+                                <a class="button" id="filter-button-user">
+                                    USER
+                                </a>
+                            </p>
+                        </div>
+                        <br/>
+                        <ul id="log-cp"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="score">
+            <div></div>
+            <button id="judge-score-button" class="button is-info">Judge</button>
+            <button id="clear-button" style="margin-left: 40px;" class="button is-danger">Clear Judge</button>
+            <button id="emit-score-button" style="margin-left: 40px;" class="button is-success">Score</button>
+        </div>
+        <!-- <br>
+        <div class="tName">
+            <button id="tname-button" class="button is-secondary">Update names</button>
+        </div> -->
+    </div>
+    <a href='#' id='rf-button'>R</a>
+    <!-- <script src="js/main.js"></script> -->
+    <!-- <script src="./js/team.js"></script> -->
+    <script src="./js/cp6.js"></script>
+</body>
+
+</html>
